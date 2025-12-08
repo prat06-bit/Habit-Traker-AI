@@ -80,7 +80,7 @@ const INSIGHT_CARDS: InsightCard[] = [
       "Habits done in the first 3 hours of your day have the highest completion rate.",
     impact: "Protect your first 60 minutes from distractions.",
     trend: "up",
-    mode: "pie",
+    mode: "pie" as InsightMode,
     chartType: "pie",
     data: [
       { label: "Morning", value: 55 },
@@ -291,7 +291,8 @@ export default function InsightsPage() {
               </div>
 
               <div className="mt-6">
-                {activeCard.mode === "chart" || activeCard.mode === "pie" ? (
+                {(activeCard.mode as InsightMode) === "chart" ? (
+
                   <InsightChart card={activeCard} />
                 ) : (
                   <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-5 text-sm text-slate-200">
