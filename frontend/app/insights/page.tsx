@@ -18,7 +18,7 @@ import {
 } from "recharts";
 
 type ChartType = "line" | "bar" | "pie";
-type InsightMode = "chart" | "text";
+type InsightMode = "chart" | "text" | "pie";
 
 type InsightCard = {
   id: string;
@@ -292,7 +292,6 @@ export default function InsightsPage() {
 
               <div className="mt-6">
                 {(activeCard.mode as InsightMode) === "chart" ? (
-
                   <InsightChart card={activeCard} />
                 ) : (
                   <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-5 text-sm text-slate-200">
