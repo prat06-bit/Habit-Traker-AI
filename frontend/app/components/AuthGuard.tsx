@@ -1,31 +1,19 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { ReactNode } from "react";
+import { redirect } from "next/navigation";
 
-export default function AuthGuard({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const router = useRouter();
+export default function AuthGuard({ children }: { children: ReactNode }) {
+  // ✅ synchronous auth check (eslint-safe)
+  const isLoggedIn =
+    typeof window !== "undefined" &&
+    Boolean(localStorage.getItem("ai-habit-user"));
 
-  // ✅ SAME SOURCE OF TRUTH AS NAVBAR
-  const [allowed, setAllowed] = useState<boolean | null>(null);
+  // ✅ redirect immediately if not authenticated
+  if (!isLoggedIn) {
+    redirect("/login");
+  }
 
-  useEffect(() => {
-    const user = localStorage.getItem("ai-habit-user");
-
-    if (!user) {
-      router.replace("/login");
-      setAllowed(false);
-    } else {
-      setAllowed(true);
-    }
-  }, [router]);
-
-  // ⛔ Prevent flash / infinite redirect
-  if (allowed === null) return null;
-
+  // ✅ render protected content
   return <>{children}</>;
 }
