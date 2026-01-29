@@ -9,26 +9,24 @@ export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
 
-  const [user, setUser] = useState<string | null>(null);
   const [hidden, setHidden] = useState(false);
   const [cursorGlow, setCursorGlow] = useState({ x: 0, y: 0 });
 
-  // 🔥 Re-check auth whenever route changes (fixes not updating after login)
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const u = localStorage.getItem("ai-habit-user");
-    setUser(u);
-  }, [pathname]);
+  // ✅ FIX: Read localStorage via lazy initializer (NO useEffect)
+  const [user, setUser] = useState<string | null>(() => {
+    if (typeof window === "undefined") return null;
+    return localStorage.getItem("ai-habit-user");
+  });
 
-  // Scroll hide/show
+  // Scroll hide/show (this effect is VALID)
   useEffect(() => {
     let lastY = window.scrollY;
 
-    function handleScroll() {
+    const handleScroll = () => {
       const currentY = window.scrollY;
       setHidden(currentY > lastY && currentY > 10);
       lastY = currentY;
-    }
+    };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -36,7 +34,7 @@ export default function Navbar() {
 
   const logout = () => {
     localStorage.removeItem("ai-habit-user");
-    setUser(null); // update immediately
+    setUser(null);
     router.push("/");
   };
 
@@ -45,14 +43,15 @@ export default function Navbar() {
       ? "text-emerald-400 font-semibold"
       : "text-slate-300 hover:text-white";
 
-  // HABITS button → works only when logged OUT
   const handleHabits = () => {
-    if (!user) return router.push("/login");
+    if (!user) router.push("/login");
   };
 
   return (
     <nav
-      onMouseMove={(e) => setCursorGlow({ x: e.clientX, y: e.clientY })}
+      onMouseMove={(e) =>
+        setCursorGlow({ x: e.clientX, y: e.clientY })
+      }
       className={`fixed top-0 left-0 w-full z-50 backdrop-blur-xl bg-black/40 border-b border-white/10 shadow-lg transition-transform duration-300 ${
         hidden ? "-translate-y-full" : "translate-y-0"
       }`}
@@ -81,12 +80,11 @@ export default function Navbar() {
 
         {/* NAVIGATION */}
         <div className="flex items-center gap-8 text-sm">
-          {/* Always visible */}
           <Link href="/" className={linkClass("/")}>
             Home
           </Link>
 
-          {/* BEFORE LOGIN → show Habits */}
+          {/* BEFORE LOGIN */}
           {!user && (
             <button
               onClick={handleHabits}
@@ -96,7 +94,7 @@ export default function Navbar() {
             </button>
           )}
 
-          {/* AFTER LOGIN → DO NOT show Habits */}
+          {/* AFTER LOGIN */}
           {user && (
             <>
               <Link href="/dashboard" className={linkClass("/dashboard")}>
@@ -121,7 +119,6 @@ export default function Navbar() {
             </>
           )}
 
-          {/* BEFORE LOGIN → Sign In */}
           {!user && (
             <Link
               href="/login"

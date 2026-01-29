@@ -1,4 +1,22 @@
-export function generateAIInsights(history: any[]) {
+// aiInsights.ts
+
+export type HabitHistoryEntry = {
+  date: string;
+};
+
+export type AIInsight = {
+  id: string;
+  title: string;
+  tag: string;
+  description: string;
+  impact: string;
+  trend: "up" | "down" | "steady";
+  detail: string;
+};
+
+export function generateAIInsights(
+  history: HabitHistoryEntry[]
+): AIInsight[] {
   if (!history || history.length === 0) {
     return [];
   }
@@ -18,8 +36,7 @@ export function generateAIInsights(history: any[]) {
       id: "2",
       title: "Weekend Momentum",
       tag: "Consistency",
-      description:
-        "Weekends show your strongest performance streak.",
+      description: "Weekends show your strongest performance streak.",
       impact: "+22% more completion on Sat–Sun.",
       trend: "up",
       detail:
@@ -29,8 +46,7 @@ export function generateAIInsights(history: any[]) {
       id: "3",
       title: "Evening Drop-Off",
       tag: "Fatigue",
-      description:
-        "Completion rate drops sharply after 9 PM.",
+      description: "Completion rate drops sharply after 9 PM.",
       impact: "-27% compared to daytime.",
       trend: "down",
       detail:

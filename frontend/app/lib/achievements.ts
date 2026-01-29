@@ -1,4 +1,4 @@
-// achievements.ts 
+// achievements.ts
 
 export type Achievement = {
   id: string;
@@ -11,7 +11,14 @@ export type Achievement = {
   required: number;
 };
 
-export function computeAchievements(history: any[]): Achievement[] {
+// ✅ Minimal, correct type for history items
+export type HabitHistoryEntry = {
+  date: string;
+};
+
+export function computeAchievements(
+  history: HabitHistoryEntry[]
+): Achievement[] {
   const total = history.length;
 
   // unique days logged
@@ -24,14 +31,16 @@ export function computeAchievements(history: any[]): Achievement[] {
   let maxStreak = 1;
 
   const sorted = [...history].sort(
-    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+    (a, b) =>
+      new Date(a.date).getTime() - new Date(b.date).getTime()
   );
 
   for (let i = 1; i < sorted.length; i++) {
     const prev = new Date(sorted[i - 1].date);
     const curr = new Date(sorted[i].date);
 
-    const diff = (curr.getTime() - prev.getTime()) / (1000 * 3600 * 24);
+    const diff =
+      (curr.getTime() - prev.getTime()) / (1000 * 3600 * 24);
 
     if (diff === 1) streak++;
     else streak = 1;
@@ -61,7 +70,6 @@ export function computeAchievements(history: any[]): Achievement[] {
       currentProgress: activeDays,
       required: 3,
     },
-
     {
       id: "heatwave7",
       title: "7-Day Heatwave",
@@ -72,7 +80,6 @@ export function computeAchievements(history: any[]): Achievement[] {
       currentProgress: maxStreak,
       required: 7,
     },
-
     {
       id: "nightowl",
       title: "Night Owl",
@@ -83,7 +90,6 @@ export function computeAchievements(history: any[]): Achievement[] {
       currentProgress: nightLogs,
       required: 5,
     },
-
     {
       id: "sunseeker",
       title: "Sun Seeker",

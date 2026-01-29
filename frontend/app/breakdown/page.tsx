@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import AuthGuard from "../components/AuthGuard";
 
 import {
@@ -387,112 +387,100 @@ function SummaryPanel({ summary }: { summary: SummaryState | null }) {
 
 export default function BreakdownPage() {
   const [activeId, setActiveId] = useState<string | null>(null);
-  const [summary, setSummary] = useState<SummaryState | null>(null);
+
 
   const activeCard: BreakdownCard | null =
     BREAKDOWN_CARDS.find((c) => c.id === activeId) ?? null;
 
   // Load history and compute summary
-  useEffect(() => {
-    let stored: HabitEntry[] = [];
+  
 
-    try {
-      const raw = localStorage.getItem("ai-habit-history") || "[]";
-      const parsed = JSON.parse(raw);
-      if (Array.isArray(parsed)) {
-        stored = parsed as HabitEntry[];
-      }
-    } catch {
-      stored = [];
+  const summary: SummaryState | null = useMemo(() => {
+  let stored: HabitEntry[] = [];
+
+  try {
+    const raw = localStorage.getItem("ai-habit-history") || "[]";
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed)) stored = parsed;
+  } catch {
+    stored = [];
+  }
+
+  if (!stored.length) {
+    return {
+      total: 0,
+      bestDay: "—",
+      topCategory: "—",
+      chartData: [],
+      radarData: [],
+      heatmap: [],
+      goalRate: 0,
+      coaching:
+        "Start logging a few tiny habits this week to unlock personalised breakdowns here.",
+    };
+  }
+
+  const byDay = Array(7).fill(0);
+  stored.forEach((h) => {
+    const d = new Date(h.date).getDay();
+    if (!Number.isNaN(d)) byDay[d]++;
+  });
+
+  const chartData = DAY_NAMES.map((label, idx) => ({
+    label,
+    value: byDay[idx],
+  }));
+
+  const bestDay =
+    DAY_NAMES[byDay.indexOf(Math.max(...byDay))] ?? "—";
+
+  const categoryCounts: Record<string, number> = {};
+  stored.forEach((h) => {
+    const cat = detectCategory(h.text || "");
+    categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
+  });
+
+  const radarData = Object.entries(categoryCounts).map(
+    ([category, score]) => ({ category, score })
+  );
+
+  const topCategory =
+    radarData.sort((a, b) => b.score - a.score)[0]?.category || "Other";
+
+  const heatmap: number[][] = [];
+  for (let w = 0; w < 4; w++) {
+    const row: number[] = [];
+    for (let d = 0; d < 7; d++) {
+      row.push(
+        Math.min(4, Math.round(byDay[d] / Math.max(1, stored.length / 10)))
+      );
     }
+    heatmap.push(row);
+  }
 
-    if (!stored.length) {
-      setSummary({
-        total: 0,
-        bestDay: "—",
-        topCategory: "—",
-        chartData: [],
-        radarData: [],
-        heatmap: [],
-        goalRate: 0,
-        coaching: "Start logging a few tiny habits this week to unlock personalised breakdowns here.",
-      });
-      return;
-    }
+  const goalRate = Math.min(
+    100,
+    Math.round((stored.length / 7) * 100)
+  );
 
-    // Day frequencies
-    const byDay: number[] = Array(7).fill(0);
-    stored.forEach((h) => {
-      const d = new Date(h.date).getDay();
-      if (!Number.isNaN(d)) {
-        byDay[d] += 1;
-      }
-    });
+  const coaching =
+    goalRate >= 90
+      ? "Your consistency is excellent. Use your strongest day to schedule one harder habit this week."
+      : goalRate >= 60
+      ? "You’re building momentum. Try locking one small habit to the same time every day."
+      : "Keep it tiny and easy. One micro-habit per day is enough to restart your streak.";
 
-    const chartData = DAY_NAMES.map((label, idx) => ({
-      label,
-      value: byDay[idx],
-    }));
-
-    const bestIndex = byDay.indexOf(Math.max(...byDay));
-    const bestDay = DAY_NAMES[bestIndex] ?? "—";
-
-    // Categories
-    const categoryCounts: Record<string, number> = {};
-    stored.forEach((h) => {
-      const cat = detectCategory(h.text || "");
-      categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
-    });
-
-    const radarData = Object.entries(categoryCounts).map(
-      ([category, score]) => ({
-        category,
-        score,
-      })
-    );
-
-    const topCategory =
-      radarData.sort((a, b) => b.score - a.score)[0]?.category || "Other";
-
-    // Simple heatmap: 4 rows * 7 columns based on byDay intensity
-    const heatmap: number[][] = [];
-    for (let w = 0; w < 4; w++) {
-      const row: number[] = [];
-      for (let d = 0; d < 7; d++) {
-        // normalize 0–4
-        const val = Math.min(4, Math.round(byDay[d] / Math.max(1, stored.length / 10)));
-        row.push(val);
-      }
-      heatmap.push(row);
-    }
-
-    // Weekly goal: 1 habit/day baseline
-    const expected = 7;
-    const goalRate = Math.min(100, Math.round((stored.length / expected) * 100));
-
-    let coaching = "";
-    if (goalRate >= 90) {
-      coaching =
-        "Your consistency is excellent. Use your strongest day to schedule one harder habit this week.";
-    } else if (goalRate >= 60) {
-      coaching =
-        "You’re building momentum. Try locking one small habit to the same time every day.";
-    } else {
-      coaching =
-        "Keep it tiny and easy. One micro-habit per day is enough to restart your streak.";
-    }
-
-    setSummary({
-      total: stored.length,
-      bestDay,
-      topCategory,
-      chartData,
-      radarData,
-      heatmap,
-      goalRate,
-      coaching,
-    });
-  }, []);
+  return {
+    total: stored.length,
+    bestDay,
+    topCategory,
+    chartData,
+    radarData,
+    heatmap,
+    goalRate,
+    coaching,
+  };
+}, []);
 
   return (
     <AuthGuard>

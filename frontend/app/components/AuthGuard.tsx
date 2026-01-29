@@ -1,23 +1,26 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
-export default function AuthGuard({ children }: { children: React.ReactNode }) {
+export default function AuthGuard({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const router = useRouter();
-  const [allowed, setAllowed] = useState(false);
+
+  const isAuthenticated =
+    typeof window !== "undefined" &&
+    !!localStorage.getItem("ai-habit-user");
 
   useEffect(() => {
-    const user = localStorage.getItem("ai-habit-user");
-
-    if (!user) {
+    if (!isAuthenticated) {
       router.replace("/login");
-    } else {
-      setAllowed(true);
     }
-  }, [router]);
+  }, [isAuthenticated, router]);
 
-  if (!allowed) {
+  if (!isAuthenticated) {
     return null; // no flicker
   }
 

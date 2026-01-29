@@ -3,8 +3,7 @@
 import {
   generateAIBreakdown,
   loadHabitHistory,
-  type BreakdownMetric,
-  type HabitEntry,
+
   type BreakdownPoint,
 } from "./aiBreakdownEngine";
 
