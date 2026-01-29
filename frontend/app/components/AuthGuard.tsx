@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function AuthGuard({
   children,
@@ -10,19 +10,22 @@ export default function AuthGuard({
 }) {
   const router = useRouter();
 
-  const isAuthenticated =
-    typeof window !== "undefined" &&
-    !!localStorage.getItem("ai-habit-user");
+  // ✅ SAME SOURCE OF TRUTH AS NAVBAR
+  const [allowed, setAllowed] = useState<boolean | null>(null);
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      router.replace("/login");
-    }
-  }, [isAuthenticated, router]);
+    const user = localStorage.getItem("ai-habit-user");
 
-  if (!isAuthenticated) {
-    return null; // no flicker
-  }
+    if (!user) {
+      router.replace("/login");
+      setAllowed(false);
+    } else {
+      setAllowed(true);
+    }
+  }, [router]);
+
+  // ⛔ Prevent flash / infinite redirect
+  if (allowed === null) return null;
 
   return <>{children}</>;
 }
