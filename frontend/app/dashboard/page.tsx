@@ -299,10 +299,10 @@ export default function DashboardPage() {
     if (!input.trim()) return;
 
     const newHabit: HabitEntry = {
-      text: input.trim(),
-      date: new Date().toISOString().slice(0, 10),
-      status: "Added",
-    };
+  text: input.trim(),
+  date: new Date().toISOString().slice(0, 10),
+  status: "pending", // ✅ VALID
+};
 
     const updated = [...allHistory, newHabit];
     setAllHistory(updated);
