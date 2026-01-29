@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 
@@ -11,14 +11,30 @@ export default function Navbar() {
 
   const [hidden, setHidden] = useState(false);
   const [cursorGlow, setCursorGlow] = useState({ x: 0, y: 0 });
+  const [user, setUser] = useState<string | null>(null);
 
-  // ✅ FIX: Read localStorage via lazy initializer (NO useEffect)
-  const [user, setUser] = useState<string | null>(() => {
-    if (typeof window === "undefined") return null;
-    return localStorage.getItem("ai-habit-user");
-  });
+  /* -------------------------
+     AUTH STATE SYNC (SAFE)
+  -------------------------- */
 
-  // Scroll hide/show (this effect is VALID)
+  const syncUser = useCallback(() => {
+    if (typeof window === "undefined") return;
+    setUser(localStorage.getItem("ai-habit-user"));
+  }, []);
+
+  useEffect(() => {
+    syncUser();
+
+    const handleStorage = () => syncUser();
+    window.addEventListener("storage", handleStorage);
+
+    return () => window.removeEventListener("storage", handleStorage);
+  }, [syncUser]);
+
+  /* -------------------------
+     SCROLL HIDE / SHOW
+  -------------------------- */
+
   useEffect(() => {
     let lastY = window.scrollY;
 
@@ -32,10 +48,22 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  /* -------------------------
+     ACTIONS
+  -------------------------- */
+
   const logout = () => {
     localStorage.removeItem("ai-habit-user");
     setUser(null);
-    router.push("/");
+    router.push("/login");
+  };
+
+  const handleHabitsClick = () => {
+    if (!user) {
+      router.push("/login");
+    } else {
+      router.push("/dashboard");
+    }
   };
 
   const linkClass = (path: string) =>
@@ -43,9 +71,9 @@ export default function Navbar() {
       ? "text-emerald-400 font-semibold"
       : "text-slate-300 hover:text-white";
 
-  const handleHabits = () => {
-    if (!user) router.push("/login");
-  };
+  /* -------------------------
+     RENDER
+  -------------------------- */
 
   return (
     <nav
@@ -84,14 +112,24 @@ export default function Navbar() {
             Home
           </Link>
 
-          {/* BEFORE LOGIN */}
+          {/* FIRST-TIME / LOGGED OUT */}
           {!user && (
-            <button
-              onClick={handleHabits}
-              className="text-slate-300 hover:text-white transition"
-            >
-              Habits
-            </button>
+            <>
+              <button
+                onClick={handleHabitsClick}
+                className="text-slate-300 hover:text-white transition"
+              >
+                Habits
+              </button>
+
+              <Link
+                href="/login"
+                className="px-5 py-2 rounded-full bg-gradient-to-r from-emerald-500 to-green-500 
+                text-white shadow-md shadow-emerald-500/30 hover:scale-105 transition"
+              >
+                Sign In →
+              </Link>
+            </>
           )}
 
           {/* AFTER LOGIN */}
@@ -117,16 +155,6 @@ export default function Navbar() {
                 Sign Out
               </button>
             </>
-          )}
-
-          {!user && (
-            <Link
-              href="/login"
-              className="px-5 py-2 rounded-full bg-gradient-to-r from-emerald-500 to-green-500 
-              text-white shadow-md shadow-emerald-500/30 hover:scale-105 transition"
-            >
-              Sign In →
-            </Link>
           )}
         </div>
       </div>
