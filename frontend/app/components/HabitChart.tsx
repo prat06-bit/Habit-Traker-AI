@@ -1,4 +1,3 @@
-// frontend/app/components/HabitChart.tsx
 "use client";
 
 import {
