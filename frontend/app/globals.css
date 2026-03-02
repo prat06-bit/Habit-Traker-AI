@@ -5,11 +5,8 @@ html {
 }
 
 body {
-  /* light + dark theme */
   @apply bg-sky-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 antialiased;
 }
-
-/* Optional reusable utility classes */
 
 .card {
   @apply rounded-2xl border border-sky-100 bg-white/80 px-5 py-4 shadow-lg shadow-sky-100/60
@@ -47,18 +44,15 @@ body {
   background: rgba(255, 255, 255, 0.12);
   box-shadow: 0 10px 40px rgba(0, 100, 255, 0.15);
 }
-/* globals.css – ensure something like this exists */
 body {
   @apply bg-slate-950 text-slate-50;
 }
-/* FULL PAGE AESTHETIC BACKGROUND */
 body {
   background: radial-gradient(circle at 20% 30%, #0a1b2a, #020617, #000);
   background-attachment: fixed;
   color: white;
 }
 
-/* CARD STYLE */
 .card {
   border-radius: 1rem;
   background: rgba(15, 25, 40, 0.55);
@@ -71,7 +65,6 @@ body {
   border-color: rgba(67, 255, 189, 0.4);
   box-shadow: 0px 0px 28px rgba(0, 255, 180, 0.25);
 }
-/* Glowing card style */
 .card {
   background: rgba(15, 23, 42, 0.6);
   border: 1px solid rgba(148, 163, 184, 0.1);
@@ -92,10 +85,9 @@ body {
 .card:hover {
   @apply shadow-emerald-500/20 border-emerald-400/40 transition;
 }
-/* Animated neon gradient shell for cards */
 .gradient-shell {
   position: relative;
-  border-radius: 1.5rem; /* matches rounded-3xl */
+  border-radius: 1.5rem; 
   padding: 1px;
   overflow: hidden;
   background:
@@ -106,10 +98,9 @@ body {
 
 .gradient-shell-inner {
   border-radius: inherit;
-  background-color: rgba(15,23,42,0.96); /* slate-950-ish */
+  background-color: rgba(15,23,42,0.96); 
 }
 
-/* Slow spinning conic gradient for more glow */
 @media (prefers-reduced-motion: no-preference) {
   .gradient-shell::before {
     content: "";
