@@ -7,7 +7,6 @@ export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
 
-  // ✅ SAFE: synchronous auth check
   const isLoggedIn =
     typeof window !== "undefined" &&
     Boolean(localStorage.getItem("ai-habit-user"));
