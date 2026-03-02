@@ -22,10 +22,6 @@ import {
   PolarRadiusAxis,
 } from "recharts";
 
-/* =========================
-   TYPES
-   ========================= */
-
 type ChartType = "line" | "bar" | "pie";
 type Mode = "chart" | "text";
 
@@ -60,10 +56,6 @@ type SummaryState = {
 
 const PIE_COLORS = ["#22c55e", "#38bdf8", "#6366f1"];
 const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-
-/* =========================
-   STATIC BREAKDOWN CARDS
-   ========================= */
 
 const BREAKDOWN_CARDS: BreakdownCard[] = [
   {
@@ -174,10 +166,6 @@ const BREAKDOWN_CARDS: BreakdownCard[] = [
   },
 ];
 
-/* =========================
-   HELPERS
-   ========================= */
-
 function detectCategory(text: string): string {
   const t = text.toLowerCase();
   if (t.includes("walk") || t.includes("run") || t.includes("steps"))
@@ -190,10 +178,6 @@ function detectCategory(text: string): string {
     return "Mindfulness";
   return "Other";
 }
-
-/* =========================
-   CHART COMPONENTS
-   ========================= */
 
 function MetricChart({ card }: { card: BreakdownCard }) {
   if (card.mode !== "chart" || !card.chartType || !card.data?.length) {
@@ -271,7 +255,7 @@ function SummaryPanel({ summary }: { summary: SummaryState | null }) {
 
   return (
     <div className="space-y-10">
-      {/* STATS */}
+      {}
       <div className="grid md:grid-cols-4 gap-6">
         <div className="p-5 rounded-xl bg-slate-900/60 border border-slate-800/70">
           <p className="text-xs text-emerald-300 uppercase">Total Habits</p>
@@ -298,7 +282,7 @@ function SummaryPanel({ summary }: { summary: SummaryState | null }) {
         </div>
       </div>
 
-      {/* LINE CHART */}
+      {}
       <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-4">
         <h3 className="text-lg font-semibold text-sky-100 mb-3">
           Weekly Activity
@@ -319,7 +303,7 @@ function SummaryPanel({ summary }: { summary: SummaryState | null }) {
         </ResponsiveContainer>
       </div>
 
-      {/* RADAR CHART */}
+      {}
       {summary.radarData.length > 0 && (
         <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-4">
           <h3 className="text-lg font-semibold text-sky-100 mb-3">
@@ -341,7 +325,7 @@ function SummaryPanel({ summary }: { summary: SummaryState | null }) {
         </div>
       )}
 
-      {/* HEATMAP */}
+      {}
       {summary.heatmap.length > 0 && (
         <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-4">
           <h3 className="text-lg font-semibold text-sky-100 mb-3">
@@ -372,7 +356,7 @@ function SummaryPanel({ summary }: { summary: SummaryState | null }) {
         </div>
       )}
 
-      {/* COACHING */}
+      {}
       <div className="p-4 rounded-xl bg-slate-900/70 border border-emerald-500/40">
         <p className="text-xs text-emerald-300 uppercase mb-1">AI Coaching</p>
         <p className="text-sm text-slate-100">{summary.coaching}</p>
@@ -381,19 +365,12 @@ function SummaryPanel({ summary }: { summary: SummaryState | null }) {
   );
 }
 
-/* =========================
-   MAIN PAGE
-   ========================= */
-
 export default function BreakdownPage() {
   const [activeId, setActiveId] = useState<string | null>(null);
 
 
   const activeCard: BreakdownCard | null =
-    BREAKDOWN_CARDS.find((c) => c.id === activeId) ?? null;
-
-  // Load history and compute summary
-  
+    BREAKDOWN_CARDS.find((c) => c.id === activeId) ?? null;  
 
   const summary: SummaryState | null = useMemo(() => {
   let stored: HabitEntry[] = [];
@@ -500,7 +477,7 @@ export default function BreakdownPage() {
             </p>
           </header>
 
-          {/* CARDS GRID */}
+          {}
           <section className="grid gap-6 md:grid-cols-2">
             {BREAKDOWN_CARDS.map((card) => (
               <button
@@ -529,7 +506,7 @@ export default function BreakdownPage() {
             ))}
           </section>
 
-          {/* ACTIVE PANEL */}
+          {}
           {activeCard && (
             <section className="rounded-3xl border border-slate-800 bg-slate-950/80 p-6 shadow-2xl shadow-emerald-500/25 backdrop-blur-sm">
               <div className="flex items-start justify-between gap-4">
