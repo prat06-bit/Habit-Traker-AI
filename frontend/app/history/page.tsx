@@ -10,9 +10,6 @@ import {
   type HabitEntry,
 } from "../lib/api";
 
-// ---------------------------------------------------------
-// GROUPING FUNCTION
-// ---------------------------------------------------------
 function groupByDate(entries: HabitEntry[]) {
   const groups: Record<string, HabitEntry[]> = {
     Today: [],
@@ -60,9 +57,6 @@ export default function HistoryPage() {
   const [search, setSearch] = useState("");
   const [sortNewestFirst, setSortNewestFirst] = useState(true);
 
-  // ---------------------------------------------------------
-  // LOAD HISTORY (from backend, fallback to local)
-  // ---------------------------------------------------------
   useEffect(() => {
     (async () => {
       setIsLoading(true);
@@ -80,18 +74,12 @@ export default function HistoryPage() {
         setIsLoading(false);
       }
     })();
-    // only on first mount; sort toggle is handled locally
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // ---------------------------------------------------------
-  // DELETE ENTRY (also sync backend)
-  // ---------------------------------------------------------
   const deleteEntry = async (index: number) => {
     const updatedDisplay = history.filter((_, i) => i !== index);
     setHistory(updatedDisplay);
 
-    // Convert back to canonical order (oldest -> newest) for storage
     const canonical = sortNewestFirst
       ? updatedDisplay.slice().reverse()
       : updatedDisplay.slice();
@@ -99,17 +87,11 @@ export default function HistoryPage() {
     await overwriteHabitsApi(canonical);
   };
 
-  // ---------------------------------------------------------
-  // SORT TOGGLE
-  // ---------------------------------------------------------
   const toggleSort = () => {
     setHistory([...history].reverse());
     setSortNewestFirst((prev) => !prev);
   };
 
-  // ---------------------------------------------------------
-  // SEARCH FILTER
-  // ---------------------------------------------------------
   const filtered = history.filter((entry) => {
     const q = search.toLowerCase();
     return (
