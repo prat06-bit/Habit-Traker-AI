@@ -208,7 +208,7 @@ export default function InsightsPage() {
     <AuthGuard>
       <main className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 pt-28 pb-24 px-6">
         <div className="mx-auto max-w-6xl flex flex-col gap-10">
-          {/* HEADER */}
+          {}
           <header className="max-w-3xl">
             <p className="text-xs uppercase tracking-[0.25em] text-emerald-300/70">
               AI Insights
@@ -222,7 +222,7 @@ export default function InsightsPage() {
             </p>
           </header>
 
-          {/* CARD GRID */}
+          {}
           <section className="grid gap-6 md:grid-cols-2">
             {INSIGHT_CARDS.map((card) => (
               <button
@@ -264,7 +264,7 @@ export default function InsightsPage() {
             ))}
           </section>
 
-          {/* ACTIVE PANEL */}
+          {}
           {activeCard && (
             <section className="rounded-3xl border border-slate-800 bg-slate-950/80 p-6 shadow-2xl shadow-emerald-500/25 backdrop-blur-sm">
               <div className="flex items-start justify-between gap-4">
