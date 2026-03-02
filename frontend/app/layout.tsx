@@ -18,7 +18,7 @@ export default function RootLayout({
       <body className="relative min-h-screen bg-slate-950 text-white overflow-x-hidden">
         <CursorGlow />
 
-        {/* Everything else sits above the glow */}
+        {}
         <div className="relative z-10">
           <Navbar />
           <main className="pt-16">{children}</main>
