@@ -1,4 +1,3 @@
-// app/lib/aiInsightEngine.ts
 
 import {
   generateAIBreakdown,
