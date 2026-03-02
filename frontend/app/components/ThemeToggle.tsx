@@ -11,10 +11,8 @@ function getInitialTheme(): Theme {
 }
 
 export default function ThemeToggle() {
-  // ✅ derive initial state synchronously (NO setState in effect)
   const [theme, setTheme] = useState<Theme>(getInitialTheme);
 
-  // ✅ effect only syncs React → DOM (allowed)
   useEffect(() => {
     document.documentElement.classList.toggle("dark", theme === "dark");
     localStorage.setItem("theme", theme);
