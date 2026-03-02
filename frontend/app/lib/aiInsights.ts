@@ -1,4 +1,3 @@
-// aiInsights.ts
 
 export type HabitHistoryEntry = {
   date: string;
