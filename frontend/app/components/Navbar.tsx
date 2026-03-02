@@ -26,10 +26,10 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
         {/* LOGO */}
         <Link href="/" className="flex items-center gap-2 font-bold text-emerald-400">
-          💡 Habit Tracker AI
+           Habit Tracker AI
         </Link>
 
-        {/* NAV LINKS */}
+        {}
         <div className="flex items-center gap-6 text-sm">
           <Link href="/" className={linkClass("/")}>Home</Link>
 
