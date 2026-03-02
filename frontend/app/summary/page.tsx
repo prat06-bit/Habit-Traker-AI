@@ -16,19 +16,11 @@ import {
 } from "recharts";
 import { motion } from "framer-motion";
 
-/* =======================
-   TYPES
-======================= */
-
 type HabitEntry = {
   date: string;
   text: string;
   status?: string;
 };
-
-/* =======================
-   HELPERS (PURE)
-======================= */
 
 function inferCategory(text: string): string {
   const t = text.toLowerCase();
@@ -69,12 +61,7 @@ function getWeekOfYear(date: Date): number {
   return Math.floor(diff / (7 * 24 * 60 * 60 * 1000));
 }
 
-/* =======================
-   PAGE
-======================= */
-
 export default function WeeklySummaryPage() {
-  /** ✅ Safe localStorage read (no effects, no warnings) */
   const [history] = useState<HabitEntry[]>(() => {
     try {
       return JSON.parse(
@@ -84,10 +71,6 @@ export default function WeeklySummaryPage() {
       return [];
     }
   });
-
-  /* =======================
-     DERIVED DATA
-  ======================= */
 
   const weeklyCounts = useMemo(() => {
     const arr = Array(7).fill(0);
@@ -134,7 +117,6 @@ export default function WeeklySummaryPage() {
     }));
   }, [history]);
 
-  /** ✅ ESLint-safe: recommendations inside memo */
   const aiAdvice = useMemo(() => {
     const recommendations = [
       "Schedule demanding habits mid-week when energy peaks.",
@@ -147,10 +129,6 @@ export default function WeeklySummaryPage() {
     const seed = now.getFullYear() * 100 + getWeekOfYear(now);
     return recommendations[seed % recommendations.length];
   }, []);
-
-  /* =======================
-     UI
-  ======================= */
 
   return (
     <AuthGuard>
@@ -237,10 +215,6 @@ export default function WeeklySummaryPage() {
     </AuthGuard>
   );
 }
-
-/* =======================
-   COMPONENTS
-======================= */
 
 function MetricCard({
   label,
