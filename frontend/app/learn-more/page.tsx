@@ -56,7 +56,7 @@ export default function LearnMorePage() {
           </motion.p>
         </section>
 
-        {/* Info cards */}
+        {}
         <section className="mt-10 grid gap-6 md:grid-cols-2">
           {points.map((point, index) => (
             <motion.div
@@ -74,7 +74,7 @@ export default function LearnMorePage() {
           ))}
         </section>
 
-        {/* Bottom CTA buttons */}
+        {}
         <section className="mt-10 flex flex-wrap gap-4">
           <Link href="/dashboard">
             <motion.button
