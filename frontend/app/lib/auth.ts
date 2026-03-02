@@ -1,4 +1,4 @@
-// frontend/app/lib/auth.ts
+
 const STORAGE_KEY = "ai-habit-logged-in";
 
 export const auth = {
