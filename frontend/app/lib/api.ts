@@ -1,24 +1,16 @@
-// app/lib/api.ts
 
 export type HabitEntry = {
   text: string;
-  date: string; // ISO string
+  date: string; 
   status: "done" | "skipped" | "pending";
 };
 
-/**
- * API base
- * MUST be set in production via NEXT_PUBLIC_API_BASE
- */
+
 const API_BASE =
   process.env.NEXT_PUBLIC_API_BASE ??
   (process.env.NODE_ENV === "development"
     ? "http://127.0.0.1:8000"
     : "");
-
-/* ======================================================
-   Local storage helpers (SSR-safe)
-   ====================================================== */
 
 function readLocalHistory(): HabitEntry[] {
   if (typeof window === "undefined") return [];
@@ -36,10 +28,6 @@ function writeLocalHistory(data: HabitEntry[]): void {
   if (typeof window === "undefined") return;
   localStorage.setItem("ai-habit-history", JSON.stringify(data));
 }
-
-/* ======================================================
-   Generic typed fetch helper
-   ====================================================== */
 
 async function apiFetch<T>(
   path: string,
@@ -64,9 +52,6 @@ async function apiFetch<T>(
   return (await res.json()) as T;
 }
 
-/* ======================================================
-   API functions
-   ====================================================== */
 
 export async function fetchHabits(): Promise<HabitEntry[]> {
   try {
