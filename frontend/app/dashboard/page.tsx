@@ -93,7 +93,7 @@ function StreakFlame({ streak }: { streak: number }) {
       transition={{ duration: 0.6, ease: "easeOut" }}
       className="flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-orange-400 via-amber-300 to-yellow-400"
     >
-      <span className="text-2xl">🔥</span>
+      <span className="text-2xl"></span>
     </motion.div>
   );
 }
@@ -275,7 +275,7 @@ export default function DashboardPage() {
     const newHabit: HabitEntry = {
   text: input.trim(),
   date: new Date().toISOString().slice(0, 10),
-  status: "pending", // ✅ VALID
+  status: "pending", 
 };
 
     const updated = [...allHistory, newHabit];
@@ -290,7 +290,7 @@ export default function DashboardPage() {
     <AuthGuard>
       <main className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 px-6 pt-28 pb-28">
         <div className="max-w-6xl mx-auto flex flex-col gap-14">
-          {/* HEADER + AI SCORE */}
+          {}
           <div className="flex justify-between items-center">
             <div>
               <p className="text-xs uppercase tracking-[0.25em] text-emerald-300/80">
@@ -320,7 +320,7 @@ export default function DashboardPage() {
             </motion.div>
           </div>
 
-          {/* ADD HABIT */}
+          {}
           <section className="rounded-3xl border border-slate-800 bg-slate-950/70 p-6 shadow-xl shadow-sky-900/40">
             <h2 className="text-xl font-semibold text-sky-100 mb-2">
               Add a Habit
@@ -356,7 +356,7 @@ export default function DashboardPage() {
             </div>
           </section>
 
-          {/* TODAY HABITS */}
+          {}
           <section className="rounded-3xl border border-slate-800 bg-slate-950/70 p-6 shadow-xl">
             <div className="flex justify-between mb-3">
               <h2 className="text-xl font-semibold text-sky-100">
@@ -391,7 +391,7 @@ export default function DashboardPage() {
             )}
           </section>
 
-          {/* WEEKLY CHART */}
+          {}
           <section className="rounded-3xl border border-slate-800 bg-slate-950/80 p-6 shadow-xl shadow-emerald-500/20">
             <h2 className="text-xl font-semibold text-sky-100 mb-2">
               Weekly Habit Completion
@@ -399,7 +399,7 @@ export default function DashboardPage() {
             <HabitChart />
           </section>
 
-          {/* ACHIEVEMENTS */}
+          {}
           <section>
             <h2 className="text-xl font-semibold text-sky-100 mb-3">
               Achievements
@@ -417,7 +417,7 @@ export default function DashboardPage() {
           </section>
         </div>
 
-        {/* MODAL CELEBRATION */}
+        {}
         <AnimatePresence>
           {selectedAchievement && (
             <motion.div
@@ -476,7 +476,7 @@ export default function DashboardPage() {
                       animate={{ opacity: 1, y: 0 }}
                       className="mt-3 text-emerald-300 text-sm font-semibold flex items-center gap-2"
                     >
-                      <span>🎉</span> You’ve unlocked this achievement!
+                      <span></span> You’ve unlocked this achievement!
                     </motion.p>
                   ) : (
                     <p className="mt-3 text-slate-400 text-xs">
