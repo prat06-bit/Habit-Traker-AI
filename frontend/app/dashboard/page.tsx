@@ -20,9 +20,6 @@ import {
   type HabitEntry,
 } from "../lib/api";
 
-// ------------------------------
-// Types
-// ------------------------------
 type Tier = "Bronze" | "Silver" | "Gold" | "Diamond";
 
 type AchievementWithMeta = RawAchievement & {
@@ -30,9 +27,6 @@ type AchievementWithMeta = RawAchievement & {
   progressRatio: number;
 };
 
-// ------------------------------
-// AI Habit Suggestions
-// ------------------------------
 const HABIT_SUGGESTIONS = [
   "Read 10 pages",
   "Meditate for 5 minutes",
@@ -44,9 +38,6 @@ const HABIT_SUGGESTIONS = [
   "Practice gratitude",
 ];
 
-// ------------------------------
-// AI Habit Score Calculation
-// ------------------------------
 function computeHabitScore(history: HabitEntry[]) {
   if (history.length === 0) return 0;
 
@@ -60,9 +51,6 @@ function computeHabitScore(history: HabitEntry[]) {
   return Math.min(streakBonus + volumeBonus + recencyBoost, 100);
 }
 
-// ------------------------------
-// Progress Ring Component
-// ------------------------------
 function ProgressRing({ percentage }: { percentage: number }) {
   const radius = 22;
   const circumference = 2 * Math.PI * radius;
@@ -93,9 +81,6 @@ function ProgressRing({ percentage }: { percentage: number }) {
   );
 }
 
-// ------------------------------
-// Flame Icon
-// ------------------------------
 function StreakFlame({ streak }: { streak: number }) {
   const intensity = Math.min(0.4 + streak * 0.05, 1);
 
@@ -113,9 +98,6 @@ function StreakFlame({ streak }: { streak: number }) {
   );
 }
 
-// ------------------------------
-// Tier helpers
-// ------------------------------
 const TIER_INFO: Record<
   Tier,
   { label: string; badgeClass: string; ringGradient: string; chipBg: string }
@@ -157,9 +139,6 @@ function autoTierForAchievement(a: RawAchievement): Tier {
   return "Diamond";
 }
 
-// ------------------------------
-// 3D Tilt Achievement Card
-// ------------------------------
 function AchievementCard({
   achievement,
   onClick,
@@ -259,9 +238,6 @@ function AchievementCard({
   );
 }
 
-// ------------------------------
-// Dashboard Page
-// ------------------------------
 export default function DashboardPage() {
   const [input, setInput] = useState("");
   const [todayHabits, setTodayHabits] = useState<HabitEntry[]>([]);
@@ -269,7 +245,6 @@ export default function DashboardPage() {
   const [selectedAchievement, setSelectedAchievement] =
     useState<AchievementWithMeta | null>(null);
 
-  // ---- LOAD FROM BACKEND (with localStorage fallback) ----
   useEffect(() => {
     (async () => {
       const stored = await fetchHabits();
@@ -294,7 +269,6 @@ export default function DashboardPage() {
     }));
   }, [allHistory]);
 
-  // ---- ADD HABIT (backend + local) ----
   function addHabit() {
     if (!input.trim()) return;
 
@@ -309,7 +283,6 @@ export default function DashboardPage() {
     setTodayHabits((prev) => [...prev, newHabit]);
     setInput("");
 
-    // fire-and-forget backend call (also syncs localStorage)
     void addHabitApi(newHabit);
   }
 
