@@ -1,4 +1,3 @@
-// achievements.ts
 
 export type Achievement = {
   id: string;
@@ -11,7 +10,6 @@ export type Achievement = {
   required: number;
 };
 
-// ✅ Minimal, correct type for history items
 export type HabitHistoryEntry = {
   date: string;
 };
@@ -21,12 +19,10 @@ export function computeAchievements(
 ): Achievement[] {
   const total = history.length;
 
-  // unique days logged
   const activeDays = new Set(
     history.map((item) => new Date(item.date).toDateString())
   ).size;
 
-  // streak calculation
   let streak = 1;
   let maxStreak = 1;
 
@@ -48,13 +44,11 @@ export function computeAchievements(
     maxStreak = Math.max(maxStreak, streak);
   }
 
-  // Logs after 10pm
   const nightLogs = history.filter((h) => {
     const hour = new Date(h.date).getHours();
     return hour >= 22 || hour <= 5;
   }).length;
 
-  // Logs on Sundays
   const sundayLogs = history.filter(
     (h) => new Date(h.date).getDay() === 0
   ).length;
