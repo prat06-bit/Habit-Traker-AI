@@ -4,8 +4,6 @@ import Link from "next/link";
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import { useState } from "react";
 
-/* ---------------- TYPES ---------------- */
-
 type FeatureCardProps = {
   href: string;
   title: string;
@@ -13,8 +11,6 @@ type FeatureCardProps = {
   description: string;
   emoji: string;
 };
-
-/* ---------------- PAGE ---------------- */
 
 export default function HomePage() {
   const [cursorGlow, setCursorGlow] = useState({ x: 0, y: 0 });
@@ -26,7 +22,7 @@ export default function HomePage() {
       }
       className="relative min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 pt-28 pb-28"
     >
-      {/* CURSOR GLOW */}
+      {}
       <motion.div
         animate={{
           x: cursorGlow.x - 20,
@@ -39,7 +35,7 @@ export default function HomePage() {
       />
 
       <div className="mx-auto max-w-6xl px-6">
-        {/* ---------------- HERO ---------------- */}
+        {}
         <section className="text-center">
           <motion.p
             initial={{ opacity: 0, y: -8 }}
@@ -80,7 +76,7 @@ export default function HomePage() {
           </motion.p>
         </section>
 
-        {/* ---------------- FEATURES ---------------- */}
+        {}
         <section className="mt-20">
           <div className="grid gap-8 md:grid-cols-3">
             <FeatureCard
@@ -108,7 +104,7 @@ export default function HomePage() {
             />
           </div>
 
-          {/* VALUE LINE */}
+          {}
           <p className="mt-10 text-center text-xs text-slate-400">
             Designed to help users make better decisions from their data — not just record it.
           </p>
@@ -117,8 +113,6 @@ export default function HomePage() {
     </main>
   );
 }
-
-/* ---------------- COMPONENTS ---------------- */
 
 function FeatureCard({
   href,
