@@ -1,4 +1,3 @@
-# main.py
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -6,10 +5,6 @@ from pydantic import BaseModel
 from typing import List
 
 app = FastAPI()
-
-# ===============================
-# CORS (SAFE FOR PRODUCTION)
-# ===============================
 
 ALLOWED_ORIGINS = [
     "http://localhost:3000",
@@ -24,24 +19,12 @@ app.add_middleware(
     allow_headers=["Content-Type"],
 )
 
-# ===============================
-# Models
-# ===============================
-
 class HabitEntry(BaseModel):
     text: str
     date: str
     status: str
 
-# ===============================
-# In-memory store (replace with DB later)
-# ===============================
-
 HABITS: List[HabitEntry] = []
-
-# ===============================
-# Routes
-# ===============================
 
 @app.get("/habits", response_model=List[HabitEntry])
 def get_habits():
