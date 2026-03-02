@@ -62,7 +62,6 @@ export default function HistoryPage() {
       setIsLoading(true);
       try {
         const stored = await fetchHabits();
-        // underlying file is stored oldest->newest
         const display = sortNewestFirst
           ? stored.slice().reverse()
           : stored.slice();
@@ -107,7 +106,7 @@ export default function HistoryPage() {
     <AuthGuard>
       <main className="min-h-screen pt-28 pb-24 px-6 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
         <div className="max-w-5xl mx-auto">
-          {/* HEADER */}
+          {}
           <header className="mb-10">
             <p className="text-xs uppercase tracking-[0.25em] text-emerald-300/70">
               History
@@ -121,7 +120,7 @@ export default function HistoryPage() {
             </p>
           </header>
 
-          {/* SEARCH + SORT */}
+          {}
           <div className="flex items-center gap-3 mb-4">
             <input
               type="text"
@@ -140,9 +139,9 @@ export default function HistoryPage() {
             </button>
           </div>
 
-          {/* MAIN WRAPPER */}
+          {}
           <div className="mt-6 rounded-2xl bg-slate-950/70 border border-slate-800/80 p-5 shadow-xl shadow-sky-900/40 max-h-[540px] overflow-y-auto scroll-smooth">
-            {/* EMPTY STATE */}
+            {}
             {!isLoading && filtered.length === 0 && (
               <div className="flex flex-col items-center justify-center py-20 opacity-80">
                 <div className="text-6xl mb-4">📭</div>
@@ -152,7 +151,7 @@ export default function HistoryPage() {
               </div>
             )}
 
-            {/* GROUPED LIST */}
+            {}
             <AnimatePresence>
               {!isLoading && filtered.length > 0 && (
                 <div className="space-y-10">
@@ -165,7 +164,7 @@ export default function HistoryPage() {
                         exit={{ opacity: 0, y: -20 }}
                         transition={{ duration: 0.3 }}
                       >
-                        {/* STICKY GROUP HEADER */}
+                        {}
                         <h2 className="text-lg font-semibold text-emerald-300 tracking-wide mb-4 bg-slate-950/80 backdrop-blur-sm sticky top-0 py-2 z-20 border-b border-slate-800">
                           {groupTitle}
                         </h2>
